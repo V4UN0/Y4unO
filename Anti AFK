@@ -1,0 +1,63 @@
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 200, 0, 70)
+Frame.Position = UDim2.new(0.5, -100, 0, 50)
+Frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Frame.Active = true
+Frame.Draggable = true
+Frame.Parent = ScreenGui
+
+local Label = Instance.new("TextLabel")
+Label.Size = UDim2.new(1, 0, 0.5, 0)
+Label.Text = "ANTI AFK IS : OFF"
+Label.TextColor3 = Color3.fromRGB(255, 0, 0)
+Label.BackgroundTransparency = 1
+Label.Font = Enum.Font.SourceSansBold
+Label.TextSize = 20
+Label.Parent = Frame
+
+local Button = Instance.new("TextButton")
+Button.Size = UDim2.new(1, 0, 0.5, 0)
+Button.Position = UDim2.new(0, 0, 0.5, 0)
+Button.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+Button.Text = "Toggle Anti-AFK"
+Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button.Font = Enum.Font.SourceSansBold
+Button.TextSize = 18
+Button.Parent = Frame
+Button.Active = true
+Button.Draggable = true
+
+local MadeBy = Instance.new("TextLabel")
+MadeBy.Size = UDim2.new(1, 0, 0.3, 0)
+MadeBy.Position = UDim2.new(0, 0, 1, 0)
+MadeBy.Text = "Made by Y4un0"
+MadeBy.TextColor3 = Color3.fromRGB(255, 255, 255)
+MadeBy.BackgroundTransparency = 1
+MadeBy.Font = Enum.Font.SourceSansBold
+MadeBy.TextSize = 14
+MadeBy.Parent = Frame
+
+local isAntiAfkEnabled = false
+local function toggleAntiAfk()
+    isAntiAfkEnabled = not isAntiAfkEnabled
+    if isAntiAfkEnabled then
+        Label.Text = "ANTI AFK IS : ON"
+        Label.TextColor3 = Color3.fromRGB(0, 255, 0)
+    else
+        Label.Text = "ANTI AFK IS : OFF"
+        Label.TextColor3 = Color3.fromRGB(255, 0, 0)
+    end
+end
+
+Button.MouseButton1Click:Connect(toggleAntiAfk)
+
+game:GetService("Players").LocalPlayer.Idled:Connect(function()
+    if isAntiAfkEnabled then
+        local VirtualUser = game:GetService("VirtualUser")
+        VirtualUser:CaptureController()
+        VirtualUser:ClickButton2(Vector2.new())
+    end
+end)
